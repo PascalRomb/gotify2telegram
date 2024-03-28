@@ -7,8 +7,11 @@ from gotify import AsyncGotify
 load_dotenv()
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 TELEGRAM_NOTIFICATION_ID = os.environ.get("TELEGRAM_NOTIFICATION_ID")
+NOTIFICATION_SERVER = os.environ.get("NOTIFICATION_SERVER")
+NOTIFICATION_CLIENT_TOKEN = os.environ.get("NOTIFICATION_CLIENT_TOKEN")
 
-assert TELEGRAM_BOT_TOKEN is not None and TELEGRAM_NOTIFICATION_ID is not None
+
+assert TELEGRAM_BOT_TOKEN is not None and TELEGRAM_NOTIFICATION_ID is not None and NOTIFICATION_SERVER is not None and NOTIFICATION_CLIENT_TOKEN is not None
 
 def send_message_to_telegram(title, body): 
     response = requests.post(
@@ -19,8 +22,8 @@ def send_message_to_telegram(title, body):
 
 async def log_push_messages():
     async_gotify = AsyncGotify(
-        base_url="http://192.168.1.181:8080",
-        client_token="CfUGHgu0wniz_81",
+        base_url=NOTIFICATION_SERVER,
+        client_token=NOTIFICATION_CLIENT_TOKEN,
     )
 
     async for msg in async_gotify.stream():
