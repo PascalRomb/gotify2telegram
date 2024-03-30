@@ -11,4 +11,4 @@ RUN apk add --update alpine-sdk
 
 RUN pip install -r requirements.txt
 
-CMD [ "python", "/app/main.py" ]
+CMD [ "python", "-u", "/app/main.py" ]
