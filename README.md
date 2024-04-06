@@ -12,7 +12,7 @@ version: '3'
 services:
   gotify-2-telegram:
     restart: unless-stopped
-    image: gotify2telegram:latest
+    image: rhombusthere/gotify2telegram:latest
     volumes:
       - .env:/app/.env
 ```
