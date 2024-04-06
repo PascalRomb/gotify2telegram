@@ -1,0 +1,32 @@
+name: Build image and push to docker hub
+
+on:
+  push:
+    tags:
+      - 'release-*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    - name: Extract tag name
+      run: |
+        TAG=$(echo $GITHUB_REF_NAME | sed 's/release-//')
+        echo "SANITIZED_TAG=$TAG" >> $GITHUB_ENV
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+    - name: Build and push docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        tags: rhombusthere/gotify2telegram:latest, rhombusthere/gotify2telegram:${{ env.SANITIZED_TAG }}
+        platforms: linux/amd64
